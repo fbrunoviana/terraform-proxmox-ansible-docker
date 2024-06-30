@@ -36,7 +36,7 @@ resource "null_resource" "provision_ct" {
 
   provisioner "local-exec" {
     command = <<EOT
-      ssh root@${var.proxmox_ip} "pct exec 111 -- bash -c 'apt-get update && apt-get install -y openssh-server && mkdir -p /run/sshd && mkdir -p /root/.ssh && echo \"$(cat ~/.ssh/id_rsa.pub)\" > /root/.ssh/authorized_keys && chown root:root /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys && sed -i \"s/#PermitRootLogin prohibit-password/PermitRootLogin yes/\" /etc/ssh/sshd_config && sed -i \"s/#PasswordAuthentication yes/PasswordAuthentication no/\" /etc/ssh/sshd_config && systemctl enable ssh && systemctl start ssh'"
+      ssh root@${var.proxmox_ip} "pct exec ${var.vmid} -- bash -c 'apt-get update && apt-get install -y openssh-server && mkdir -p /run/sshd && mkdir -p /root/.ssh && echo \"$(cat ~/.ssh/id_rsa.pub)\" > /root/.ssh/authorized_keys && chown root:root /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys && sed -i \"s/#PermitRootLogin prohibit-password/PermitRootLogin yes/\" /etc/ssh/sshd_config && sed -i \"s/#PasswordAuthentication yes/PasswordAuthentication no/\" /etc/ssh/sshd_config && systemctl enable ssh && systemctl start ssh'"
     EOT
   }
 }
