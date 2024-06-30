@@ -11,9 +11,13 @@ resource "proxmox_lxc" "ct_create" {
   cores       = var.cores
   memory      = var.memory
   password    = random_password.password.result
+  unprivileged = true
   rootfs {
     storage = "local-lvm"
     size    = var.disk_size
+  }
+  features {
+    nesting = true
   }
   network {
     name    = "eth0"
